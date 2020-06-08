@@ -188,13 +188,7 @@ bool OMR::CFGSimplifier::simplifyIfStructure()
 
 bool OMR::CFGSimplifier::simplifyIfPatterns(bool needToDuplicateTree)
    {
-   return simplifyBooleanStore(needToDuplicateTree)
-          || simplifyNullToException(needToDuplicateTree)
-          || simplifySimpleStore(needToDuplicateTree)
-          || simplifyCondStoreSequence(needToDuplicateTree)
-          || simplifyInstanceOfTestToCheckcast(needToDuplicateTree)
-          || simplifyBoundCheckWithThrowException(needToDuplicateTree)
-          ;
+   return simplifyBoundCheckWithThrowException(needToDuplicateTree);
    }
 
 bool  OMR::CFGSimplifier::hasExceptionPoint(TR::Block *block, TR::TreeTop *end)
