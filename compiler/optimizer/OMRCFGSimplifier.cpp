@@ -188,13 +188,7 @@ bool OMR::CFGSimplifier::simplifyIfStructure()
 
 bool OMR::CFGSimplifier::simplifyIfPatterns(bool needToDuplicateTree)
    {
-   return simplifyBooleanStore(needToDuplicateTree)
-          || simplifyNullToException(needToDuplicateTree)
-          || simplifySimpleStore(needToDuplicateTree)
-          || simplifyCondStoreSequence(needToDuplicateTree)
-          || simplifyInstanceOfTestToCheckcast(needToDuplicateTree)
-          || simplifyBoundCheckWithThrowException(needToDuplicateTree)
-          ;
+   return simplifyBoundCheckWithThrowException(needToDuplicateTree);
    }
 
 bool  OMR::CFGSimplifier::hasExceptionPoint(TR::Block *block, TR::TreeTop *end)
@@ -395,6 +389,9 @@ bool OMR::CFGSimplifier::simplifyInstanceOfTestToCheckcast(bool needToDuplicateT
 //
 bool OMR::CFGSimplifier::simplifyBoundCheckWithThrowException(bool needToDuplicateTree) 
    {
+   static char *disableSimplifyBNDCHKWithException = feGetEnv("TR_disableSimplifyBNDCHKWithException");
+   if (disableSimplifyBNDCHKWithException != NULL)
+      return false;
    if (trace())
       traceMsg(comp(), "Start simplifyBoundCheckWithThrowException\n");
    TR::TreeTop * treeTop = getLastRealTreetop(_block);
