@@ -188,12 +188,12 @@ bool OMR::CFGSimplifier::simplifyIfStructure()
 
 bool OMR::CFGSimplifier::simplifyIfPatterns(bool needToDuplicateTree)
    {
-   return simplifyBooleanStore(needToDuplicateTree)
+   return /*simplifyBooleanStore(needToDuplicateTree)
           || simplifyNullToException(needToDuplicateTree)
           || simplifySimpleStore(needToDuplicateTree)
           || simplifyCondStoreSequence(needToDuplicateTree)
           || simplifyInstanceOfTestToCheckcast(needToDuplicateTree)
-          || simplifyBoundCheckWithThrowException(needToDuplicateTree)
+          ||*/ simplifyBoundCheckWithThrowException(needToDuplicateTree)
           ;
    }
 
@@ -340,7 +340,7 @@ bool OMR::CFGSimplifier::simplifyInstanceOfTestToCheckcast(bool needToDuplicateT
 //    ificmplt (i, length) ======    
 //        |                   |  |
 //      throw  <--------------   |
-//        |                      |
+//                               |
 //      return <=================
 //
 //   Pattern-2:
@@ -349,15 +349,15 @@ bool OMR::CFGSimplifier::simplifyInstanceOfTestToCheckcast(bool needToDuplicateT
 //    ificmpge (i, length) ------|   
 //        |                      |
 //      return                   |
-//        |                      |
-//       throw <-----------------
+//                               |
+//      throw <------------------
 //
 //   Pattern-3:
 //    ificmpge (i, 0) -----------
 //        | (FallThrough)        |
-//      throw                    |
-//        |                      |
-//    ificmpge (i, length) <-----
+//  --> throw                    |
+// |                             |
+//  - ificmpge (i, length) <-----
 //        |                      
 //      return
 //
@@ -375,20 +375,24 @@ bool OMR::CFGSimplifier::simplifyInstanceOfTestToCheckcast(bool needToDuplicateT
 //
 //
 //  Simplification:
-//    BNDCHK (i, length)  ----(exp edge) --> goto
+//    BNDCHK (i, length)  ----(exp edge) ------ 
 //      |                                      |
 //    return                                   |
-//      |                                      |
-//    throw Exception() <----------------------
+//                                             |
+//     goto  <---------------------------------
+//      |
+//    throw Exception() 
 // Or,
 //
 //  Simplification:
-//    BNDCHK (i, length)  ----(exp edge) --> goto
+//    BNDCHK (i, length)  ----(exp edge) ------ 
 //      |                                      |
 //    goto =================                   |
-//      |                   |                  |
-//    throw Exception() <----------------------
-//      |                   |  
+//                          |                  |
+//    goto   <---------------------------------
+//      |                   |
+//    throw Exception()     |
+//                          |  
 //    return <==============
 //
 // Return "true" if any transformations were made.
