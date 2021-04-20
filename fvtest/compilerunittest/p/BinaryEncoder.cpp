@@ -2514,6 +2514,17 @@ INSTANTIATE_TEST_CASE_P(VMX, PPCRecordFormSanityTest, ::testing::ValuesIn(*TRTes
     std::make_tuple(TR::InstOpCode::vxor,     TR::InstOpCode::bad,        BinaryInstruction())
 )));
 
+INSTANTIATE_TEST_CASE_P(VectorCountZeroLeastSignificantBitBytes, PPCTrg1Src1EncodingTest, ::testing::Values(
+    std::make_tuple(TR::InstOpCode::vclzlsbb,   TR::RealRegister::gr0,  TR::RealRegister::vr0,  0x10000602u),
+    std::make_tuple(TR::InstOpCode::vclzlsbb,   TR::RealRegister::gr31,   TR::RealRegister::vr0, 0x13E00602u),
+    std::make_tuple(TR::InstOpCode::vclzlsbb,   TR::RealRegister::gr0,   TR::RealRegister::vr31, 0x1000FE02u),
+    std::make_tuple(TR::InstOpCode::vclzlsbb,  TR::RealRegister::gr31,  TR::RealRegister::vr31,  0x13E0FE02u),
+    std::make_tuple(TR::InstOpCode::vctzlsbb,   TR::RealRegister::gr0,  TR::RealRegister::vr0,  0x10010602u),
+    std::make_tuple(TR::InstOpCode::vctzlsbb,   TR::RealRegister::gr31,   TR::RealRegister::vr0, 0x13E10602u),
+    std::make_tuple(TR::InstOpCode::vctzlsbb,   TR::RealRegister::gr0,   TR::RealRegister::vr31, 0x1001FE02u),
+    std::make_tuple(TR::InstOpCode::vctzlsbb,  TR::RealRegister::gr31,  TR::RealRegister::vr31,  0x13E1FE02u)
+));
+
 INSTANTIATE_TEST_CASE_P(VSXScalarFixed, PPCTrg1Src1EncodingTest, ::testing::Values(
     std::make_tuple(TR::InstOpCode::mfvsrd,   TR::RealRegister::gr31,  TR::RealRegister::vsr0,  0x7c1f0066u),
     std::make_tuple(TR::InstOpCode::mfvsrd,   TR::RealRegister::gr0,   TR::RealRegister::vsr63, 0x7fe00067u),
@@ -3925,6 +3936,32 @@ INSTANTIATE_TEST_CASE_P(LoadVSXLength, PPCTrg1Src2EncodingTest, ::testing::Value
 
 INSTANTIATE_TEST_CASE_P(LoadVSXLength, PPCRecordFormSanityTest, ::testing::Values(
     std::make_tuple(TR::InstOpCode::lxvl, TR::InstOpCode::bad, BinaryInstruction())
+));
+
+INSTANTIATE_TEST_CASE_P(LoadVSXLengthLeftJustified, PPCTrg1Src2EncodingTest, ::testing::Values(
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr0,  TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7c00025au),
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr31, TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7fe0025au),
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr63, TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7fe0025bu),
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr63, TR::RealRegister::gr31,  TR::RealRegister::gr31,  0x7ffffa5bu),
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr0,  TR::RealRegister::gr31, TR::RealRegister::gr0,  0x7c1f025au),
+    std::make_tuple(TR::InstOpCode::lxvll, TR::RealRegister::vsr0,  TR::RealRegister::gr0,  TR::RealRegister::gr31, 0x7c00fa5au)
+));
+
+INSTANTIATE_TEST_CASE_P(LoadVSXLengthLeftJustified, PPCRecordFormSanityTest, ::testing::Values(
+    std::make_tuple(TR::InstOpCode::lxvll, TR::InstOpCode::bad, BinaryInstruction())
+));
+
+INSTANTIATE_TEST_CASE_P(LoadVSXBytes16Indexed, PPCTrg1Src2EncodingTest, ::testing::Values(
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr0,  TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7c0006d8u),
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr31, TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7fe006d8u),
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr63, TR::RealRegister::gr0,  TR::RealRegister::gr0,  0x7fe006d9u),
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr63, TR::RealRegister::gr31,  TR::RealRegister::gr31,  0x7ffffed9u),
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr0,  TR::RealRegister::gr31, TR::RealRegister::gr0,  0x7c1f06d8u),
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::RealRegister::vsr0,  TR::RealRegister::gr0,  TR::RealRegister::gr31, 0x7c00fed8u)
+));
+
+INSTANTIATE_TEST_CASE_P(LoadVSXBytes16Indexed, PPCRecordFormSanityTest, ::testing::Values(
+    std::make_tuple(TR::InstOpCode::lxvb16x, TR::InstOpCode::bad, BinaryInstruction())
 ));
 
 INSTANTIATE_TEST_CASE_P(StorePrefix, PPCMemSrc1EncodingTest, ::testing::ValuesIn(*TRTest::MakeVector<std::tuple<TR::InstOpCode::Mnemonic, MemoryReference, TR::RealRegister::RegNum, BinaryInstruction, bool>>(

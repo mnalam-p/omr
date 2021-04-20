@@ -585,8 +585,8 @@
 // vabsduw,          // vector absolute difference unsigned word
    vand,             // vector logical and
    vandc,            // vector logical and with complement
-// vclzlsbb,         // vector count leading zero least-significant bits byte
-// vctzlsbb,         // vector count trailing zero least-significant bits byte
+   vclzlsbb,         // vector count leading zero least-significant bits byte
+   vctzlsbb,         // vector count trailing zero least-significant bits byte
 // vctzb,            // vector count trailing zeros Byte
 // vctzh,            // vector count trailing zeros Hword
 // vctzw,            // vector count trailing zeros Word
@@ -638,6 +638,7 @@
 // vpermr,           // vector permute right-indexed
 // vbpermd,          // vector bit permute DWord
    vbpermq,          // Vector Bit Permute Qword
+// vextractbm,       // Vector Extract Byte Mask
 // vrld,             // Vector Rotate Left Dword
 // vsbox,            // Vector AES SubBytes
    vsel,             // vector conditional select
@@ -822,9 +823,9 @@
 // lxsibzx,          // Load VSX scalar as integer byte & zero indexed
 // lxsihzx,          // Load VSX scalar as integer Hword & zero indexed
    lxv,              // Load VSX vector
-// lxvb16x,          // Load VSX vector byte*16 indexed
+   lxvb16x,          // Load VSX vector byte*16 indexed
 // lxvh8x,           // Load VSX vector Hword*8 indexed
-// lxvll,            // Load VSX vector left-justified with length
+   lxvll,            // Load VSX vector left-justified with length
 // lxvwsx,           // Load VSX vector word & splat indexed
 // lxvx,             // Load VSX vector indexed
 // stxsd,            // Store VSX Scalar Dword
